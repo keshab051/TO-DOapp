@@ -19,4 +19,21 @@ def mark_as_undo(request,pk):
     undo_task.is_completed = False
     undo_task.save()
     return redirect('home')
-    # return HttpResponse('from mark_as_undo')
+
+def edit_task(request,pk):
+    get_task = get_object_or_404(Task,pk=pk)
+    if request.method == 'POST':
+        updated_task = request.POST['task']
+        get_task.task = updated_task
+        get_task.save()
+        return redirect('home')
+    else: 
+        context = {
+            'task1':get_task, 
+        }
+    return render(request,'edit_task.html',context)
+
+def delete_task(request,pk):
+    get_task = get_object_or_404(Task,pk=pk)
+    get_task.delete()
+    return redirect('home')
